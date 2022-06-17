@@ -1,6 +1,6 @@
 #define BLYNK_TEMPLATE_ID "TMPLZXC-QBoy"
-#define BLYNK_DEVICE_NAME "Car Parking"
-#define BLYNK_AUTH_TOKEN "Iq3aTPKqb1771Sxrh1fCQh19AbD0g6hC"
+#define BLYNK_DEVICE_NAME "DEVICE NAME OF THE BLYNK DEVICE"
+#define BLYNK_AUTH_TOKEN "BLYNK AUTH TOKEN"
 
 
 #define BLYNK_PRINT Serial
@@ -29,9 +29,9 @@ char auth[] = BLYNK_AUTH_TOKEN;
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance.
 //************************************************************************
 /* Set these to your desired credentials. */
-const char *ssid = "Anugraha";
-const char *password = "Anugraha@64";
-const char* device_token  = "2fe2cb53573b7f71";
+const char *ssid = "W-Fi SSID";
+const char *password = "Wi-Fi PASSWORD";
+const char* device_token  = "TOKEN ID OF THE WEB-APP";
 
 BlynkTimer timer;
 //************************************************************************
@@ -40,7 +40,7 @@ BlynkTimer timer;
 X509List cert(TELEGRAM_CERTIFICATE_ROOT);
 WiFiClientSecure secured_client;
 //************************************************************************
-String URL = "http://192.168.29.159/rfidattendance/getdata.php"; //computer IP or the server domain
+String URL = "http://IP-ADDRESS/rfidattendance/getdata.php"; //computer IP or the server domain
 String getData, Link;
 String OldCardID = "";
 unsigned long previousMillis = 0;
