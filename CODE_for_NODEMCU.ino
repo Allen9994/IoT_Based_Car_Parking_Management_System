@@ -29,7 +29,7 @@ char auth[] = BLYNK_AUTH_TOKEN;
 MFRC522 mfrc522(SS_PIN, RST_PIN); // Create MFRC522 instance.
 //************************************************************************
 /* Set these to your desired credentials. */
-const char *ssid = "W-Fi SSID";
+const char *ssid = "Wi-Fi SSID";
 const char *password = "Wi-Fi PASSWORD";
 const char* device_token  = "TOKEN ID OF THE WEB-APP";
 
