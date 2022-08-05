@@ -1,3 +1,6 @@
+
+//--------Start of the NodeMCU Program code---------
+//Header Files--------------------
 #define BLYNK_TEMPLATE_ID "TMPLZXC-QBoy"
 #define BLYNK_DEVICE_NAME "DEVICE NAME OF THE BLYNK DEVICE"
 #define BLYNK_AUTH_TOKEN "BLYNK AUTH TOKEN"
@@ -9,7 +12,7 @@
 #include <MFRC522.h>
 #include <Wire.h>
 
-//NodeMCU--------------------------
+//IoT--------------------------
 #include <ESP8266WiFi.h>
 #include <ESP8266HTTPClient.h>
 #include <BlynkSimpleEsp8266.h>
@@ -106,7 +109,7 @@ void loop() {
 }
 
 
-void mesg(String y, String token, String chat)
+void message(String y, String token, String chat)
 {
   UniversalTelegramBot bot(token, secured_client);  
   //Starts Telegram bot using the Token of each user's telegram.
@@ -134,7 +137,7 @@ void telegram(String CI, String un, int amount, int time_, String adm, String to
       + String(le) + ". Kindly " + String(y); //Produces the welcome message to be sent to their telegram.
       Serial.println(n);
       delay(100);
-      mesg(n,token,chat); //Calls the sending function.
+      message(n,token,chat); //Calls the sending function.
     }
     if(adm == "logout") //If the user is entering the lot.
     {//Produces the exit message to be sent to their telegram.
@@ -152,7 +155,7 @@ void telegram(String CI, String un, int amount, int time_, String adm, String to
       } 
       Serial.println(n);
       delay(100);
-      mesg(n,token,chat);//Calls the sending function.
+      message(n,token,chat);//Calls the sending function.
     }  
 }
 
