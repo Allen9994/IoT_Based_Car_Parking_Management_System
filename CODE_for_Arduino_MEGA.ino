@@ -237,8 +237,7 @@ if(digitalRead (ir_back) == 0 && flag2 == LOW)   //When the exit sensor detects 
       if(card_status == 1 || card_status == 3)  //To allow the car to leave the parking lot. Ignore the balance of the driver.
       {
         myservo.write(180); Serial.println("Gate Opens ");
-        slot = slot+1;  //Opens the gate my signaling the motor to rotate 180D. Increments the slot count by 1.
-        card_status = 0;
+        slot += 1;  card_status = 0; //Opens the gate my signaling the motor to rotate 180D. Increments the slot count by 1.
       }
       else if(card_status == 2)  //Invalid car detected.
       {
