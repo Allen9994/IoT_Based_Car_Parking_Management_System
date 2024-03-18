@@ -44,12 +44,9 @@ X509List cert(TELEGRAM_CERTIFICATE_ROOT);
 WiFiClientSecure secured_client;
 //************************************************************************
 String URL = "http://IP-ADDRESS/rfidattendance/getdata.php"; //computer IP or the server domain
-String getData, Link;
-String OldCardID = "";
+String getData, Link, OldCardID = "";
 unsigned long previousMillis = 0;
-int n;
-int p1,p2,p3,p4,p5,p6;
-int le = 1;
+int n,p1,p2,p3,p4,p5,p6,le=1;
 String msg; //To extract serial message from Arduino
 //************************************************************************
 
@@ -148,9 +145,8 @@ void telegram(String CI, String un, int amount, int time_, String adm, String to
         + " seconds inside the parking lot. Your remaining balance is : " + String(amount); 
       }else
       {
-        amount = -amount;
         n = "Dear " + un + ". You have spent " + String(time_) 
-        + " seconds inside the parking lot. You have a pending debt of " + String(amount) 
+        + " seconds inside the parking lot. You have a pending debt of " + String(-amount) 
         + ". Kindly clear your dues before your next arrival."; 
       } 
       Serial.println(n);
@@ -158,8 +154,6 @@ void telegram(String CI, String un, int amount, int time_, String adm, String to
       message(n,token,chat);//Calls the sending function.
     }  
 }
-
-
 
 //************send the Card UID to the website*************
 void SendCardID( String Card_uid ){
@@ -206,28 +200,23 @@ void SendCardID( String Card_uid ){
       }else   // NOT in edit stage ie. Under normal operation. Extracting useful information from the SQL response.
       {
         int y = 0;  //Initialising y = 0. y is used to measure size of each line.
-        while(payload[y]!='{'){  //When payload reaches '{' symbol, measures the number of decimal places in amount.
+        while(payload[y] != '{'){  //When payload reaches '{' symbol, measures the number of decimal places in amount.
           y++;
         }int z= y;
-        while(payload[z]!='/'){  //When payload reaches '/' symbol, measures the number of decimal places in time remaining.
+        while(payload[z] != '/'){  //When payload reaches '/' symbol, measures the number of decimal places in time remaining.
           z++;
         }int a= z;        
-        while(payload[a]!='}'){ //When payload reaches '}' symbol, measures the number of decimal places in telegram token.
+        while(payload[a] != '}'){ //When payload reaches '}' symbol, measures the number of decimal places in telegram token.
           a++;
         }int b= a;        
-        while(payload[b]!='l'){  //When payload reaches 'l' symbol, measures the number of decimal places in telegram chat ID.
+        while(payload[b] != 'l'){  //When payload reaches 'l' symbol, measures the number of decimal places in telegram chat ID.
           b++;
         }
         int j = payload.substring(0,y).toInt(); //Extracts and converts the amount to integer variable j.
         int ti = payload.substring(y+1,z).toInt();  //Extracts and converts the time remaining to integer variable ti.
         String token = payload.substring(z+1,a);  //Extracts  the token to String variable token.
         String chat = payload.substring(a+1,b);   //Extracts  the tchat ID to String variable chat.
-        Serial.println(j);
-        Serial.println(ti);
-        Serial.println(token);
-        Serial.println(chat);
         if (payload.substring(b, b+5) == "login") { //When there's enough balance and valid card, allows user to enter.
-       
          digitalWrite(D3,HIGH); digitalWrite(D4,HIGH); //Sending signal 11 to Arduino         
          delay(1000);
          digitalWrite(D3,LOW);  digitalWrite(D4,LOW);
@@ -272,53 +261,28 @@ void Blynk_function()
             p6 = n;
             String ss;
             ss = String(le)+String(p1)+String(p2)+String(p3)+String(p4)+String(p5)+String(p6);
-            if(p1 == 0){le = 1;}else if(p2 == 0){le = 2;}else if(p3 == 0){le = 3;}
-            else if(p4 == 0){le = 4;}else if(p5 == 0){le = 5;}else if(p6 == 0){le = 6;}
+            if(p1 == 0)      le = 1;
+            else if(p2 == 0) le = 2;
+            else if(p3 == 0) le = 3;
+            else if(p4 == 0) le = 4;
+            else if(p5 == 0) le = 5;
+            else if(p6 == 0) le = 6;
             Serial.println(ss);
             Blynk.virtualWrite(V7, 6-p1-p2-p3-p4-p5-p6); 
             //Sends remaining slot information to blynk's 7th virtual pin.
-            if(p1==1)//Here it turns on/off the Blynk LED depending on the value of p which was extracted before.
-            { 
-              Blynk.virtualWrite(V1, HIGH);
-            }else
-            { 
-              Blynk.virtualWrite(V1, LOW);
-            }
-            if(p2==1)
-            {
-              Blynk.virtualWrite(V2, HIGH);
-            }else
-            {
-              Blynk.virtualWrite(V2, LOW);
-            }
-            if(p3==1)
-            {
-              Blynk.virtualWrite(V3, HIGH);
-            }else
-            {
-              Blynk.virtualWrite(V3, LOW);
-            }
-            if(p4==1)
-            {
-              Blynk.virtualWrite(V4, HIGH);
-            }else
-            {
-              Blynk.virtualWrite(V4, LOW);
-            }
-            if(p5==1)
-            {
-              Blynk.virtualWrite(V5, HIGH);
-            }else
-            {
-              Blynk.virtualWrite(V5, LOW);
-            }
-            if(p6==1)
-            {
-              Blynk.virtualWrite(V6, HIGH);
-            }else
-            {
-              Blynk.virtualWrite(V6, LOW);
-            }
+            //Here it turns on/off the Blynk LED depending on the value of p which was extracted before.
+            if(p1==1) Blynk.virtualWrite(V1, HIGH);
+            else      Blynk.virtualWrite(V1, LOW);
+            if(p2==1) Blynk.virtualWrite(V2, HIGH);
+            else      Blynk.virtualWrite(V2, LOW);
+            if(p3==1) Blynk.virtualWrite(V3, HIGH);
+            else      Blynk.virtualWrite(V3, LOW);
+            if(p4==1) Blynk.virtualWrite(V4, HIGH);
+            else      Blynk.virtualWrite(V4, LOW);
+            if(p5==1) Blynk.virtualWrite(V5, HIGH);
+            else      Blynk.virtualWrite(V5, LOW);
+            if(p6==1) Blynk.virtualWrite(V6, HIGH);
+            else      Blynk.virtualWrite(V6, LOW);
        }
 }
 //********************connect to the WiFi******************
@@ -341,7 +305,6 @@ void connectToWiFi(){
     Serial.print("IP address: ");
     Serial.println(WiFi.localIP());  //IP address assigned to your ESP
     configTime(0, 0, "pool.ntp.org"); // get UTC time via NTP
-  time_t now = time(nullptr);
-    
+    time_t now = time(nullptr);
     delay(1000);
 }
