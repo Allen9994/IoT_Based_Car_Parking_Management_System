@@ -139,9 +139,9 @@ void loop(){
   
 slotInformation();  //Displays slot information and free slots in the LCD display.
 
-if(digitalRead (ir_enter) == 0 && flag1==LOW) //When the entry sensor detects car and.
+if(digitalRead (ir_enter) == 0 && flag1 == LOW) //When the entry sensor detects car and.
 {   // the car is attempting to enter.
-  if(slot>0 && space + slot>4)  //To allow the car inside only if there is 
+  if(slot > 0 && space + slot > 4)  //To allow the car inside only if there is 
   { // vacanat slot and no congestion.
       flag1 = HIGH; //to prevent this 'if statement' to reitereate. Stores car presence in flag1.
     if(flag2 == LOW)  //When no presence of car was detected in exit sensor (Car is entering).
@@ -271,7 +271,7 @@ if(flag1 == HIGH && flag2 == HIGH)  //To close the gate.
     delay (1000);
     myservo.write(90);  //Closes the gate by signaling the motor to rotate 90D..
     Serial.println("Gate Closes ");
-    flag1=LOW, flag2=LOW; //Reinitialises the flag information for new car.
+    flag1 = LOW, flag2 = LOW; //Reinitialises the flag information for new car.
   }
 }
 
